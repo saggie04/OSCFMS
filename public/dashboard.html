@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — Course Feedback</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--accent:#2563eb}
+    .card { background: white; border-radius: 12px; box-shadow: 0 6px 20px rgba(2,6,23,0.06); }
+    .muted { color:#6b7280; }
+    .btn { padding:8px 12px; border-radius:8px; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+  <header class="bg-white shadow-sm">
+    <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="https://api.iconify.design/mdi:school.svg?color=%232563eb" class="w-8 h-8" alt="">
+        <div>
+          <div class="text-lg font-semibold">Course Feedback</div>
+          <div class="text-xs muted">Admin dashboard</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/index.html" class="text-sm muted hover:text-slate-900">Feedback form</a>
+        <button id="logoutBtn" class="btn bg-white border">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-6 space-y-6">
+    <section class="card p-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 id="userGreeting" class="text-2xl font-semibold">Hi, User</h1>
+          <div id="userEmail" class="muted mt-1">you@example.com</div>
+        </div>
+
+        <div class="flex gap-3">
+          <button id="loadFeedbacks" class="px-3 py-2 rounded-md bg-indigo-50 text-indigo-700">Refresh</button>
+          <button id="createSample" class="px-3 py-2 rounded-md border">Create sample</button>
+        </div>
+      </div>
+
+      <p class="text-sm muted mt-4">Use the buttons to load recent feedbacks. You can extend this page to add delete/approve actions.</p>
+    </section>
+
+    <section class="card p-6">
+      <h2 class="text-lg font-medium mb-3">Recent feedbacks</h2>
+      <div id="list" class="space-y-3">
+        <div class="text-sm muted">No data loaded yet. Click "Refresh".</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function(){
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      window.location.href = '/auth.html';
+      return;
+    }
+
+    // get user info
+    fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + token } })
+      .then(r => r.ok ? r.json() : Promise.reject(r))
+      .then(data => {
+        const user = data.user;
+        document.getElementById('userGreeting').textContent = `Hi, ${user.name}`;
+        document.getElementById('userEmail').textContent = user.email;
+      })
+      .catch(() => {
+        localStorage.removeItem('auth_token');
+        window.location.href = '/auth.html';
+      });
+
+    // load feedbacks
+    document.getElementById('loadFeedbacks').addEventListener('click', async () => {
+      const list = document.getElementById('list');
+      list.innerHTML = '<div class="text-sm muted">Loading…</div>';
+      try {
+        const res = await fetch('/api/feedback');
+        const arr = await res.json();
+        if (!Array.isArray(arr) || arr.length === 0) {
+          list.innerHTML = '<div class="text-sm muted">No feedbacks yet.</div>';
+          return;
+        }
+        list.innerHTML = '';
+        arr.forEach(it => {
+          const d = document.createElement('div');
+          d.className = 'p-4 bg-white rounded-md border';
+          d.innerHTML = `
+            <div class="flex justify-between items-start gap-3">
+              <div>
+                <div class="font-medium text-slate-900">${escapeHtml(it.name)} <span class="text-sm muted">— ${escapeHtml(it.course)}</span></div>
+                <div class="text-sm muted mt-1">${escapeHtml(it.comments || 'No comment')}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-sm font-semibold text-indigo-600">${it.rating}/5</div>
+                <div class="text-xs muted mt-1">${new Date(it.createdAt).toLocaleString()}</div>
+              </div>
+            </div>
+          `;
+          list.appendChild(d);
+        });
+      } catch (err) {
+        list.innerHTML = '<div class="text-sm text-red-600">Failed to load feedbacks</div>';
+        console.error(err);
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('auth_token');
+      window.location.href = '/auth.html';
+    });
+
+    document.getElementById('createSample').addEventListener('click', async () => {
+      // helper to add a sample feedback (for quick demo)
+      try {
+        await fetch('/api/feedback', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ name:'Demo user', course:'Web Development', rating:5, comments:'Sample demo feedback' })
+        });
+        document.getElementById('loadFeedbacks').click();
+      } catch(e){ console.error(e) }
+    });
+
+    function escapeHtml(s) {
+      if (!s) return '';
+      return s.replace(/[&<>"']/g, c => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[c]);
+    }
+
+  })();
+  </script>
+</body>
+</html>

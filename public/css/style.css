@@ -1,0 +1,315 @@
+/* Minimal • Professional • Clean — replace public/css/style.css with this */
+
+/* Font: Plus Jakarta Sans for a very modern look */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --page-bg: #f6f8fb;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --text: #0f1724;
+  --border: #e6e9ef;
+  --accent: #2563eb;
+  --accent-2: #2b6ef6;
+  --radius: 14px;
+  --shadow-soft: 0 10px 30px rgba(19, 23, 35, 0.06);
+  --shadow-strong: 0 18px 50px rgba(19, 23, 35, 0.09);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* base */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 36px 20px;
+}
+
+/* main container */
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 8px;
+}
+
+/* heading — larger, elegant*/
+h1 {
+  margin: 0 0 22px;
+  font-weight: 700;
+  font-size: clamp(2rem, 3.6vw, 3rem); /* big but responsive */
+  line-height: 1.02;
+  letter-spacing: -0.6px;
+  color: var(--text);
+  transform: translateY(6px);
+  opacity: 0;
+  animation: fadeUp .42s ease forwards .05s;
+}
+
+/* card — minimal and soft */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 26px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 26px;
+  transition: transform .18s ease, box-shadow .18s ease;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeUp .42s ease forwards .10s;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-strong);
+}
+
+/* labels */
+label { display:block; margin-bottom:8px; font-weight:600; color:var(--text); font-size:0.95rem; }
+
+/* form layout */
+.form-row { display:grid; grid-template-columns: 1fr 240px 120px; gap:14px; align-items:end; }
+@media (max-width:760px) { .form-row { grid-template-columns: 1fr; } }
+
+/* inputs — roomy and subtle */
+input[type="text"], input[type="number"], select, textarea {
+  width:100%;
+  padding:12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 0.96rem;
+  color: var(--text);
+  transition: box-shadow .15s ease, border-color .12s ease, transform .08s ease;
+  outline: none;
+  height: auto;
+}
+textarea { min-height: 110px; resize: vertical; }
+
+/* focus state — crisp */
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(37,99,235,0.95);
+  box-shadow: 0 8px 28px rgba(37,99,235,0.08);
+  transform: translateY(-2px);
+}
+
+/* placeholders */
+::placeholder { color: rgba(31,41,55,0.28); }
+
+/* action buttons */
+.actions { display:flex; gap:12px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+button {
+  cursor:pointer;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.96rem;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s;
+}
+button:active { transform: translateY(2px); }
+
+/* primary */
+button[type="submit"] {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: white;
+  box-shadow: 0 10px 30px rgba(37,99,235,0.12);
+  min-width: 220px;
+}
+button[type="submit"]:hover { transform: translateY(-3px); }
+
+/* secondary */
+#loadBtn {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: inset 0 -8px 18px rgba(0,0,0,0.03);
+  min-width: 140px;
+}
+#loadBtn:hover { background: #fafbfd; transform: translateY(-2px); }
+
+/* subtle success message */
+#message { margin-top:12px; min-height:1.2em; font-weight:600; color:#16a34a; }
+
+/* feedback list */
+#feedbackList { margin-top:12px; display:flex; flex-direction:column; gap:12px; }
+.feedback-item {
+  padding:16px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeUp .32s ease forwards;
+}
+.feedback-item:nth-child(1){ animation-delay:.04s }
+.feedback-item:nth-child(2){ animation-delay:.08s }
+
+/* meta & text */
+.feedback-meta { font-weight:700; color:var(--text); font-size:1rem; }
+.feedback-text { color:var(--muted); margin-top:6px; font-size:0.95rem; }
+.feedback-time { color:#94a3b8; font-size:0.82rem; }
+
+/* rating pill */
+.rating-pill { padding:6px 10px; border-radius:10px; background: rgba(37,99,235,0.06); color:var(--accent-2); font-weight:700; }
+
+/* small utility */
+footer { margin-top:22px; color:var(--muted); font-size:0.90rem; text-align:center; }
+
+/* fadeUp animation */
+@keyframes fadeUp { to { opacity:1; transform:none; } }
+
+/* responsive */
+@media (max-width:480px){
+  body { padding:18px; }
+  .card { padding:16px; }
+  .actions { flex-direction:column; align-items:stretch; }
+  button { width:100%; }
+}
+/* ----------------------
+   Animations (append to style.css)
+   ---------------------- */
+
+/* 1) Header gentle float + entrance (already has fadeUp) */
+h1 {
+  /* add slight hovering motion after entrance */
+  will-change: transform;
+  animation: fadeUp 0.45s ease forwards .05s, headerFloat 6s ease-in-out infinite 1s;
+}
+@keyframes headerFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* 2) Card subtle parallax on hover (tune) */
+.card {
+  transition: transform .28s cubic-bezier(.2,.9,.3,1), box-shadow .28s, background .28s;
+  transform-origin: center;
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.004);
+  box-shadow: 0 28px 70px rgba(19,23,35,0.10);
+}
+
+/* 3) Input focus shimmer & soft lift */
+.input, input, select, textarea {
+  position: relative;
+  transition: box-shadow .18s ease, transform .12s ease, border-color .12s ease;
+}
+.input:focus, input:focus, select:focus, textarea:focus {
+  transform: translateY(-3px);
+}
+
+/* thin shimmer line from left to right on focus */
+.input::after,
+input::after,
+textarea::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; height: 2px; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(37,99,235,0.22), transparent);
+  transform: translateX(-105%);
+  transition: transform .45s cubic-bezier(.2,.9,.3,1);
+  pointer-events: none;
+  border-radius: 2px;
+  opacity: 0.95;
+}
+.input:focus::after,
+input:focus::after,
+textarea:focus::after {
+  transform: translateX(0%);
+}
+
+/* 4) Primary button sheen (pseudo-element) */
+button[type="submit"] {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+button[type="submit"]::before{
+  content: "";
+  position: absolute;
+  left: -40%;
+  top: -40%;
+  width: 40%;
+  height: 180%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+  transform: rotate(20deg) translateX(0);
+  transition: transform .7s cubic-bezier(.2,.9,.3,1), opacity .5s;
+  opacity: 0;
+  pointer-events: none;
+}
+button[type="submit"]:hover::before{
+  transform: translateX(220%);
+  opacity: 1;
+}
+
+/* 5) Button click "pop" — quick scale and soft shadow */
+button[type="submit"]:active {
+  transform: scale(.98) translateY(1px);
+  box-shadow: 0 8px 28px rgba(37,99,235,0.14);
+}
+
+/* 6) Feedback items stagger & gentle 3D tilt on hover */
+.feedback-item {
+  will-change: transform, opacity;
+  transition: transform .18s cubic-bezier(.2,.9,.3,1), box-shadow .18s;
+  transform-origin: left center;
+}
+.feedback-item:hover {
+  transform: translateY(-6px) translateZ(0) scale(1.002);
+  box-shadow: 0 20px 48px rgba(11,22,36,0.06);
+}
+
+/* make stagger slightly longer for many items */
+.feedback-item { animation: fadeUp .36s ease forwards; }
+.feedback-item:nth-child(n){ animation-delay: calc(0.05s * var(--i, 1)); }
+
+/* 7) Success pulse for the whole page (trigger by adding class "submitted" to body) */
+/* Optional: If you later want to trigger this from JS, do document.body.classList.add('submitted') */
+body.submitted {
+  animation: successPulse 1.2s ease forwards;
+}
+@keyframes successPulse {
+  0%   { box-shadow: none; transform: none; }
+  30%  { transform: scale(1.002); box-shadow: 0 16px 50px rgba(37,99,235,0.06); }
+  100% { transform: none; box-shadow: none; }
+}
+
+/* 8) Tiny loading shimmer on the load button when it has attribute data-loading="true" */
+/* This is optional — requires JS to set attribute, but harmless without it */
+#loadBtn[data-loading="true"] {
+  position: relative;
+  color: rgba(15,23,36,0.6);
+  pointer-events: none;
+}
+#loadBtn[data-loading="true"]::after {
+  content:"";
+  position:absolute; inset:0; border-radius:10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  transform: translateX(-100%);
+  animation: loadShimmer 1s linear infinite;
+  mix-blend-mode: overlay;
+}
+@keyframes loadShimmer { to { transform: translateX(100%); } }
+
+/* 9) subtle focus-visible outline for accessibility */
+:focus-visible {
+  outline: 3px solid rgba(37,99,235,0.12);
+  outline-offset: 3px;
+}
+
+/* 10) reduce motion support (users who prefer reduced motion) */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+

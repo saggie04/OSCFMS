@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Course Feedback</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<main class="container">
+<h1>Course Feedback</h1>
+
+
+<form id="feedbackForm" class="card">
+<label>
+Your name
+<input type="text" id="name" required />
+</label>
+
+
+<label>
+Course
+<select id="course" required>
+  <option value="">-- choose a course --</option>
+  <option>Intro to Programming</option>
+  <option>Data Structures</option>
+  <option>Web Development</option>
+
+  <!-- add your new courses here -->
+  <option>Algorithms</option>
+  <option>Operating Systems</option>
+  <option>Database Systems</option>
+  <option>Machine Learning</option>
+  <option>Computer Networks</option>
+  <option>Software Engineering</option>
+</select>
+</label>
+
+
+<label>
+Rating (1-5)
+<input type="number" id="rating" min="1" max="5" required />
+</label>
+
+
+<label>
+Comments
+<textarea id="comments" rows="3"></textarea>
+</label>
+
+
+<div class="actions">
+<button type="submit">Submit Feedback</button>
+<button type="button" id="loadBtn">Load Feedbacks</button>
+</div>
+
+
+<div id="message" role="status"></div>
+</form>
+
+
+<section id="list" class="card">
+<h2>Feedbacks</h2>
+<div id="feedbackList">No feedbacks loaded yet.</div>
+</section>
+</main>
+
+
+<script src="js/app.js"></script>
+</body>
+</html>
